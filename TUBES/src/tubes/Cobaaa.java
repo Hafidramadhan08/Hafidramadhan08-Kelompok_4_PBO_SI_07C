@@ -3,16 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package tubes;
-
-/**
- *
- * @author dell G7
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 public class Cobaaa extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Cobaaa
-     */
     public Cobaaa() {
         initComponents();
     }
@@ -39,6 +34,7 @@ public class Cobaaa extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
+        saveData = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,10 +47,6 @@ public class Cobaaa extends javax.swing.JFrame {
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Logo BC.jpg"))); // NOI18N
         jLabel5.setText("jLabel5");
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField2");
-
         jLabel1.setText("Golongan Darah");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Golongan darah", "A", "B", "AB", "O" }));
@@ -63,6 +55,13 @@ public class Cobaaa extends javax.swing.JFrame {
 
         jLabel6.setText("DATA PASIEN");
 
+        saveData.setText("Simpan");
+        saveData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveDataActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -70,12 +69,11 @@ public class Cobaaa extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(718, 718, 718)
+                        .addGap(314, 314, 314)
+                        .addComponent(saveData, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(254, 254, 254)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(234, 234, 234)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,13 +91,17 @@ public class Cobaaa extends javax.swing.JFrame {
                                     .addComponent(jComboBox1, 0, 173, Short.MAX_VALUE)
                                     .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(264, 264, 264))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -120,8 +122,10 @@ public class Cobaaa extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(168, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saveData, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,6 +147,45 @@ public class Cobaaa extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDataActionPerformed
+    String namaPasien = jTextField1.getText();
+    String noRekamMedis = jTextField2.getText();
+    String jenisKelamin = (String) jComboBox2.getSelectedItem();
+    String golonganDarah = (String) jComboBox1.getSelectedItem();
+
+    // Buat objek Pasien
+    Pasien pasien = new Pasien(namaPasien, noRekamMedis, jenisKelamin, golonganDarah);
+
+    String sql = "INSERT INTO pasien (nama, no_rekam_medis, jenis_kelamin, golongan_darah) VALUES (?, ?, ?, ?)";
+    
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        if (connection != null) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, pasien.getNama());
+                preparedStatement.setString(2, pasien.getNoRekamMedis());
+                preparedStatement.setString(3, pasien.getJenisKelamin());
+                preparedStatement.setString(4, pasien.getGolonganDarah());
+                
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Data pasien berhasil disimpan!");
+                    
+                    // Setelah menyimpan data, buka WaterIntakeCalculator
+                    WaterIntakeCalculator waterIntakeCalculator = new WaterIntakeCalculator();
+                    waterIntakeCalculator.setVisible(true); // Tampilkan jendela baru
+                    this.dispose(); // Tutup jendela Cobaaa jika perlu
+                } else {
+                    System.out.println("Gagal menyimpan data pasien.");
+                }
+            }
+        } else {
+            System.out.println("Koneksi ke database gagal.");
+        }
+    } catch (SQLException e) {
+        System.out.println("Error saat menyimpan data pasien: " + e.getMessage());
+    }
+    }//GEN-LAST:event_saveDataActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,5 +236,6 @@ public class Cobaaa extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton saveData;
     // End of variables declaration//GEN-END:variables
 }
